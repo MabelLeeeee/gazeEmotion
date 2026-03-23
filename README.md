@@ -1,8 +1,10 @@
 <div align="center">
 
-<img src="assets/gaze_emotion.svg" alt="Gaze Emotion" width="60%"/>
+<img src="assets/gaze_emotion.svg" alt="Gaze Emotion" width="100%"/>
 
 # 🎯 Gaze Emotion — 视频情绪检测与视线头部分析系统
+
+---
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.10%2B-EE4C2C?logo=pytorch)](https://pytorch.org/)
@@ -16,8 +18,6 @@
 
 </div>
 
----
-
 ## 📌 目录
 
 - [项目简介](#项目简介)
@@ -28,8 +28,9 @@
 - [模型下载](#模型下载)
 - [使用说明](#使用说明)
 - [参数说明](#参数说明)
-- [项目结构](#项目结构)
+- [运行结果](#运行结果)
 - [应用场景](#应用场景)
+- [项目结构](#项目结构)
 - [项目说明](#项目说明)
 - [扩展计划](#扩展计划)
 
@@ -49,10 +50,29 @@
 
 ## 效果演示
 
-| 原始视频 | 处理效果 |
-|:---:|:---:|
-| [▶ demo.mp4](readme_src/demo.mp4) | [▶ demo_show.mp4](readme_src/demo_show.mp4) |
+<table border="0" style="width: 100%; text-align: left; margin-top: 20px;">
+  <tr>
+      <td>
+          <video src="https://github.com/user-attachments/assets/e26721e9-65d5-4362-97e9-69fe2e7bf7aa" width="320" controls loop></video>
+      </td>
+      <td>
+          <video src="https://github.com/user-attachments/assets/e5637945-da7f-43dc-b82f-1933e2bd57c8" width="320" controls loop></video>
+      </td>
+      
+  </tr>
+  <tr>
+      <td>
+          <video src="https://github.com/user-attachments/assets/b1ea3491-5188-460b-b831-9bafb8fd92b4" width="320" controls loop></video>
+      </td>
+      <td>
+          <video src="https://github.com/user-attachments/assets/ea697426-cd47-4b18-b317-6f4cacdb8891" width="320" controls loop></video>
+      </td>
+      
+  </tr>
 
+</table>
+
+## 快速体验
 > 💡 **立即体验（windows）**：[点击下载程序包 →](https://drive.google.com/uc?export=download&id=1sH3AfQdfjfLpvcWitlilsO-D0xrYBQbh)，解压后在本地直接运行即可。
 
 ---
@@ -118,7 +138,14 @@ weights/
 └── PrivateTest_model.t7
 ```
 
-### 5. 运行
+### 5. 手动修改环境包
+```bash
+1. 把 S:\miniconda3\envs\emotion\Lib\site-packages\ptgaze\common 中
+[face_model.py visualizer.py camera.py]中的np.int & np.float 分别改成 np.int64 & np.float64
+2.在上述环境 visualizer.py 中添加相关代码, 参考补充代码 -> ./patch.py
+3.在上述环境 face_parts.py 中添加相关代码, 参考补充代码 -> ./patch.py
+```
+### 6. 运行
 
 **离线视频检测：**
 
@@ -194,68 +221,21 @@ python run.py --camera 0
 | `--no-screen` | 关闭屏幕实时显示 | `--no-screen` |
 | `--debug` | 启用调试模式 | `--debug` |
 
----
-
-## 项目结构
-
-```
-gazeEmotion/                                  # 项目根目录
-├─ .gitignore                                 # Git 忽略规则
-├─ README.md                                  # 当前项目说明文档
-├─ readme_old.md                              # 旧版 README 备份
-├─ requirements.txt                           # Python 依赖列表
-├─ run.py                                     # 主入口脚本（启动离线/实时检测）
-├─ assets/                                    # 演示与文档素材
-│  ├─ demo.mp4                                # 示例原始视频
-│  └─ gaze_emotion.svg                         # 项目相关示意图标
-├─ data/                                      # 配置与相机参数数据
-│  ├─ calib/                                  # 相机标定参数
-│  │  └─ sample_params.yaml                   # 示例相机参数文件
-│  ├─ configs/                                # 不同 gaze 模式配置
-│  │  ├─ eth-xgaze.yaml                       # ETH-XGaze 配置
-│  │  ├─ mpiifacegaze.yaml                    # MPIIFaceGaze 配置
-│  │  └─ mpiigaze.yaml                        # MPIIGaze 配置
-│  └─ normalized_camera_params/               # 归一化相机参数
-│     ├─ eth-xgaze.yaml                       # ETH-XGaze 归一化参数
-│     ├─ mpiifacegaze.yaml                    # MPIIFaceGaze 归一化参数
-│     └─ mpiigaze.yaml                        # MPIIGaze 归一化参数
-├─ models/                                    # 模型定义代码
-│  ├─ __init__.py                             # 模型包初始化
-│  ├─ vgg.py                                  # VGG 情绪识别模型定义
-│  └─ __pycache__/                            # Python 编译缓存（可忽略）
-├─ readme_src/                                # README 展示资源
-│  ├─ demo.mp4                                # README 用原始演示视频
-│  └─ demo_show.mp4                           # README 用处理后演示视频
-├─ results/                                   # 推理输出目录
-│  ├─ camera/                                 # 摄像头实时模式输出
-│  └─ video/                                  # 离线视频模式输出
-├─ src/                                       # 核心业务代码
-│  ├─ __init__.py                             # src 包初始化
-│  ├─ creat_tf.py                             # 数据预处理/transform 构建
-│  ├─ demo.py                                 # 推理流程与可视化主逻辑
-│  ├─ gaze_estimator.py                       # 视线估计与情绪识别核心
-│  ├─ utils.py                                # 工具函数（下载/路径/参数等）
-│  ├─ head_pose_estimation/                   # 头姿估计子模块
-│  │  ├─ __init__.py                          # 子模块初始化
-│  │  ├─ face_landmark_estimator.py           # 人脸关键点估计
-│  │  ├─ head_pose_normalizer.py              # 头姿归一化处理
-│  │  └─ __pycache__/                         # Python 编译缓存（可忽略）
-│  └─ __pycache__/                            # Python 编译缓存（可忽略）
-├─ weights/                                   # 本地模型权重
-│  └─ PrivateTest_model.t7                    # 情绪识别模型权重
-└─ .idea/                                     # PyCharm 工程配置（IDE 文件）
-   ├─ .gitignore                              # IDE 目录的忽略规则
-   ├─ gazeEmotion.iml                         # PyCharm 模块配置
-   ├─ misc.xml                                # PyCharm 基础配置
-   ├─ modules.xml                             # PyCharm 模块列表
-   ├─ vcs.xml                                 # 版本控制配置
-   ├─ workspace.xml                           # 本地工作区配置（个人）
-   └─ inspectionProfiles/                     # 代码检查配置
-      ├─ profiles_settings.xml                # 检查配置设置
-      └─ Project_Default.xml                  # 默认检查规则
-```
 
 ---
+
+## 运行结果
+
+#### 视频文件：./assets/face4.mp4
+
+| 序号 | 😠 Angry | 🤢 Disgust | 😨 Fear | 😊 Happy | 😢 Sad | 😯 Surprise | 😐 Neutral | 检测方向 | 识别标签 |
+| ---- | ------- | --------- | ------ | ------- | ----- | ---------- | -------- | ------- | -------- |
+| 1    | 1       | 0         | 0      | 111     | 31    | 0          | 16       | [652 81], [746 204] | Happy, Sad |
+| 2    | 0       | 0         | 0      | 135     | 0     | 0          | 11       | [281 87], [400 227] | Happy, Neutral |
+
+---
+
+
 
 ## 应用场景
 
@@ -280,10 +260,50 @@ gazeEmotion/                                  # 项目根目录
 
 ---
 
+## 项目结构
+```
+gazeEmotion/                                  # 项目根目录
+├─ README.md                                  # 当前项目说明文档
+├─ run.py                                     # 主入口脚本（启动离线/实时检测）
+├─ assets/                                    # 演示与文档素材
+│  ├─ demo.mp4                                # 示例原始视频
+│  └─ gaze_emotion.svg                        # 项目相关示意图标
+├─ data/                                      # 配置与相机参数数据
+│  ├─ calib/                                  # 相机标定参数
+│  │  └─ sample_params.yaml                   # 示例相机参数文件
+│  ├─ configs/                                # 不同 gaze 模式配置
+│  │  ├─ eth-xgaze.yaml                       # ETH-XGaze 配置
+│  │  ├─ mpiifacegaze.yaml                    # MPIIFaceGaze 配置
+│  │  └─ mpiigaze.yaml                        # MPIIGaze 配置
+│  └─ normalized_camera_params/               # 归一化相机参数
+│     ├─ eth-xgaze.yaml                       # ETH-XGaze 归一化参数
+│     ├─ mpiifacegaze.yaml                    # MPIIFaceGaze 归一化参数
+│     └─ mpiigaze.yaml                        # MPIIGaze 归一化参数
+├─ models/                                    # 模型定义代码
+│  ├─ __init__.py                             # 模型包初始化
+│  └─ vgg.py                                  # VGG 情绪识别模型定义
+├─ results/                                   # 推理输出目录
+│  ├─ camera/                                 # 摄像头实时模式输出
+│  └─ video/                                  # 离线视频模式输出
+├─ src/                                       # 核心业务代码
+│  ├─ __init__.py                             # src 包初始化
+│  ├─ creat_tf.py                             # 数据预处理/transform 构建
+│  ├─ demo.py                                 # 推理流程与可视化主逻辑
+│  ├─ gaze_estimator.py                       # 视线估计与情绪识别核心
+│  ├─ utils.py                                # 工具函数（下载/路径/参数等）
+│  └─ head_pose_estimation/                   # 头姿估计子模块
+│     ├─ __init__.py                          # 子模块初始化
+│     ├─ face_landmark_estimator.py           # 人脸关键点估计
+│     └─ head_pose_normalizer.py              # 头姿归一化处理
+└─ weights/                                   # 本地模型权重
+   └─ PrivateTest_model.t7                    # 情绪识别模型权重
+
+```
+---
+
 ## 项目说明
 
 项目的详细说明可参考[项目说明](readme_old.md)
-
 
 ---
 

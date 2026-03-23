@@ -178,6 +178,10 @@ class GazeEstimator:
         img = gray[:, :, np.newaxis]
 
         img = np.concatenate((img, img, img), axis=2)
+
+        img = np.clip(img, 0, 255).astype(np.uint8)
+        if img.shape[:2] == (1, 1):
+            img = img.squeeze()
         img = Image.fromarray(img)
         inputs = transform_test(img)
 
