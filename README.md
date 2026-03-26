@@ -228,7 +228,7 @@ python run.py --camera 0
 
 #### 视频文件：./assets/face4.mp4
 
-| 序号 | 😠 Angry | 🤢 Disgust | 😨 Fear | 😊 Happy | 😢 Sad | 😯 Surprise | 😐 Neutral | 检测方向 | 识别标签 |
+| 人物序号（含身份识别可入库） | 😠 Angry | 🤢 Disgust | 😨 Fear | 😊 Happy | 😢 Sad | 😯 Surprise | 😐 Neutral | 检测方向 | 识别标签 |
 | ---- | ------- | --------- | ------ | ------- | ----- | ---------- | -------- | ------- | -------- |
 | 1    | 1       | 0         | 0      | 111     | 31    | 0          | 16       | [652 81], [746 204] | Happy, Sad |
 | 2    | 0       | 0         | 0      | 135     | 0     | 0          | 11       | [281 87], [400 227] | Happy, Neutral |
